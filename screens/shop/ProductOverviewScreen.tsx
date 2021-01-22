@@ -3,21 +3,30 @@ import { Text } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import { NavigationScreenProp } from "react-navigation";
 import { useSelector } from "react-redux";
+import ProductItem from "../../components/shop/ProductItem";
 
-interface Props {
+interface ProductOverviewScreenProps {
   navigation: NavigationScreenProp<any, any>;
 }
 
-const ProductOverviewScreen = (props: Props) => {
+const ProductOverviewScreen = (props: ProductOverviewScreenProps) => {
   const products = useSelector(
     (state: RootState) => state.products.availableProducts
   );
 
   return (
-    <FlatList
-      data={products}
-      renderItem={(itemData) => <Text>{itemData.item.title}</Text>}
-    />
+    <>
+      <FlatList
+        data={products}
+        renderItem={(itemData) => (
+          <ProductItem
+            product={itemData.item}
+            onAddToCart={() => {}}
+            onViewDetails={() => {}}
+          />
+        )}
+      />
+    </>
   );
 };
 
