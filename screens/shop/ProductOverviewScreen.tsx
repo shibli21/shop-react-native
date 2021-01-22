@@ -1,5 +1,4 @@
 import React from "react";
-import { Text } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import { NavigationScreenProp } from "react-navigation";
 import { useSelector } from "react-redux";
@@ -22,7 +21,12 @@ const ProductOverviewScreen = (props: ProductOverviewScreenProps) => {
           <ProductItem
             product={itemData.item}
             onAddToCart={() => {}}
-            onViewDetails={() => {}}
+            onViewDetails={() => {
+              props.navigation.navigate("ProductDetail", {
+                productId: itemData.item.id,
+                productTitle: itemData.item.title,
+              });
+            }}
           />
         )}
       />

@@ -10,6 +10,7 @@ interface Props {
 
 const ProductItem = ({ product, onViewDetails, onAddToCart }: Props) => {
   return (
+    // <TouchableNativeFeedback onPress={onViewDetails}>
     <View style={styles.product}>
       <Image style={styles.image} source={{ uri: product.imageUrl }} />
 
@@ -34,6 +35,7 @@ const ProductItem = ({ product, onViewDetails, onAddToCart }: Props) => {
         </View>
       </View>
     </View>
+    // </TouchableNativeFeedback>
   );
 };
 
