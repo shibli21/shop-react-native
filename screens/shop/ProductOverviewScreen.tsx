@@ -1,16 +1,28 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Text } from "react-native";
+import { FlatList } from "react-native-gesture-handler";
+import { NavigationScreenProp } from "react-navigation";
+import { useSelector } from "react-redux";
 
-interface Props {}
+interface Props {
+  navigation: NavigationScreenProp<any, any>;
+}
 
 const ProductOverviewScreen = (props: Props) => {
+  const products = useSelector(
+    (state: RootState) => state.products.availableProducts
+  );
+
   return (
-    <View>
-      <Text></Text>
-    </View>
+    <FlatList
+      data={products}
+      renderItem={(itemData) => <Text>{itemData.item.title}</Text>}
+    />
   );
 };
 
-export default ProductOverviewScreen;
+ProductOverviewScreen.navigationOptions = {
+  headerTitle: "All Products",
+};
 
-const styles = StyleSheet.create({});
+export default ProductOverviewScreen;
