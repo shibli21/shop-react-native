@@ -5,14 +5,13 @@ import { useDispatch, useSelector } from "react-redux";
 import CartItem from "../../components/shop/CartItem";
 import colors from "../../constants/colors";
 import { removeFromCart } from "../../store/actions/cart";
+import { addOrder } from "../../store/actions/orders";
 
 interface Props {}
 
 const CartScreen = (props: Props) => {
   const dispatch = useDispatch();
-  const cartTotalAmount = useSelector(
-    (state: RootState) => state.cart.totalAmount
-  );
+  const cart = useSelector((state: RootState) => state.cart);
 
   const cartItems = useSelector((state: RootState) => {
     const transformedCartItems = [];
@@ -35,11 +34,13 @@ const CartScreen = (props: Props) => {
       <View style={styles.summary}>
         <Text style={styles.summaryText}>
           Total:
-          <Text style={styles.amount}>${cartTotalAmount.toFixed(2)}</Text>
+          <Text style={styles.amount}>${cart.totalAmount.toFixed(2)}</Text>
         </Text>
         <Button
           title="Order Now"
-          onPress={() => {}}
+          onPress={() => {
+            dispatch(addOrder(cart.items, cart.totalAmount));
+          }}
           disabled={cartItems.length === 0}
         />
       </View>

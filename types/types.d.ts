@@ -12,9 +12,20 @@ interface ProductsState {
   userProduct: Product[];
 }
 
+interface Order {
+  id: string;
+  items: Item;
+  date: Date;
+  totalAmount: number;
+}
+interface OrdersState {
+  orders: Order[];
+}
+
 interface RootState {
   products: ProductsState;
   cart: CartState;
+  orders: OrdersState;
 }
 
 interface Item {
