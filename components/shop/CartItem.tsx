@@ -52,8 +52,8 @@ const styles = StyleSheet.create({
     paddingRight: 10,
   },
   mainText: {
-    fontFamily: "open-sans-bold",
     fontSize: 16,
+    fontWeight: "bold",
   },
   deleteButton: {
     marginLeft: 20,

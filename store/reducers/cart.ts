@@ -31,6 +31,31 @@ export default (state = initialState, action: CartActionType) => {
         items: { ...state.items, [addToProduct.id]: updatedOrNewCart },
         totalAmount: state.totalAmount + prodPrice,
       };
+    case "REMOVE_FROM_CART":
+      const selectedCartItem = state.items[action.productId];
+      const currentQty = selectedCartItem.qty;
+      let updatedCartItems;
+      if (currentQty > 1) {
+        // need to reduce it, not erase it
+        const updatedCartItem = new CartItem(
+          selectedCartItem.qty - 1,
+          selectedCartItem.productPrice,
+          selectedCartItem.productTitle,
+          selectedCartItem.sum - selectedCartItem.productPrice
+        );
+        updatedCartItems = {
+          ...state.items,
+          [action.productId]: updatedCartItem,
+        };
+      } else {
+        updatedCartItems = { ...state.items };
+        delete updatedCartItems[action.productId];
+      }
+      return {
+        ...state,
+        items: updatedCartItems,
+        totalAmount: state.totalAmount - selectedCartItem.productPrice,
+      };
 
     default:
       return state;
