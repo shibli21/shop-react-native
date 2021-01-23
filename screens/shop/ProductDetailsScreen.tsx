@@ -2,14 +2,14 @@ import React from "react";
 import { Button, Image, StyleSheet, Text, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import {
-  NavigationComponent,
   NavigationParams,
   NavigationScreenProp,
   NavigationState,
 } from "react-navigation";
 import { StackNavigationOptions } from "react-navigation-stack/lib/typescript/src/vendor/types";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import colors from "../../constants/colors";
+import * as CartActions from "../../store/actions/cart";
 
 interface ProductDetailsScreenProps {
   navigation: NavigationScreenProp<any, any>;
@@ -22,12 +22,19 @@ const ProductDetailsScreen = (props: ProductDetailsScreenProps) => {
   const product = useSelector((state: RootState) =>
     state.products.availableProducts.find((product) => product.id === productId)
   );
+  const dispatch = useDispatch();
 
   return (
     <ScrollView>
       <Image style={styles.image} source={{ uri: product?.imageUrl }} />
       <View style={styles.actions}>
-        <Button color={colors.primary} title="Add to cart" onPress={() => {}} />
+        <Button
+          color={colors.primary}
+          title="Add to cart"
+          onPress={() => {
+            dispatch(CartActions.addToCart(product!!));
+          }}
+        />
       </View>
       <View style={styles.details}>
         <Text style={styles.title}>{product?.title}</Text>
