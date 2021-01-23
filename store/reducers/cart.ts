@@ -29,6 +29,7 @@ export default (state = initialState, action: CartActionType) => {
       return {
         ...state,
         items: { ...state.items, [addToProduct.id]: updatedOrNewCart },
+        totalAmount: state.totalAmount + prodPrice,
       };
 
     default:
