@@ -51,6 +51,7 @@ const CartScreen: NavigationStackScreenComponent = (props: Props) => {
           data={cartItems}
           renderItem={({ item }) => (
             <CartItem
+              removable
               quantity={item.quantity}
               title={item.productTitle}
               amount={item.sum}
