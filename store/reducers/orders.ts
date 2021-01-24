@@ -1,3 +1,4 @@
+import Order from "../../models/order";
 import { OrdersActionType } from "./../actions/orders";
 const initialState: OrdersState = {
   orders: [],
