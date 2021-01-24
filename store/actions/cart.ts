@@ -1,3 +1,4 @@
+import { AddOrderAction } from "./orders";
 export const ADD_TO_CART = "ADD_TO_CART";
 export const REMOVE_FROM_CART = "REMOVE_FROM_CART";
 
@@ -11,7 +12,10 @@ interface RemoveFromCartAction {
   productId: string;
 }
 
-export type CartActionType = AddToCartAction | RemoveFromCartAction;
+export type CartActionType =
+  | AddToCartAction
+  | RemoveFromCartAction
+  | AddOrderAction;
 
 export const addToCart = (product: Product): CartActionType => {
   return { type: ADD_TO_CART, product: product };
