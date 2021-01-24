@@ -6,8 +6,8 @@ import {
   NavigationScreenProp,
   NavigationState,
 } from "react-navigation";
+import { DrawerNavigatorItems } from "react-navigation-drawer";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
-import { NavigationStackScreenComponent } from "react-navigation-stack";
 import { StackNavigationOptions } from "react-navigation-stack/lib/typescript/src/vendor/types";
 import { useDispatch, useSelector } from "react-redux";
 import ProductItem from "../../components/shop/ProductItem";
@@ -62,6 +62,17 @@ ProductOverviewScreen.navigationOptions = ({
           iconName={Platform.OS === "android" ? "md-cart" : "ios-cart"}
           onPress={() => {
             navigation.navigate("Cart");
+          }}
+        />
+      </HeaderButtons>
+    ),
+    headerLeft: () => (
+      <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+        <Item
+          title="Menu"
+          iconName={Platform.OS === "android" ? "md-menu" : "ios-menu"}
+          onPress={() => {
+            navigation.toggleDrawer();
           }}
         />
       </HeaderButtons>

@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, StyleSheet, Text, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
+import { NavigationStackScreenComponent } from "react-navigation-stack";
 import { useDispatch, useSelector } from "react-redux";
 import CartItem from "../../components/shop/CartItem";
 import colors from "../../constants/colors";
@@ -9,7 +10,7 @@ import { addOrder } from "../../store/actions/orders";
 
 interface Props {}
 
-const CartScreen = (props: Props) => {
+const CartScreen: NavigationStackScreenComponent = (props: Props) => {
   const dispatch = useDispatch();
   const cart = useSelector((state: RootState) => state.cart);
 
@@ -62,6 +63,10 @@ const CartScreen = (props: Props) => {
       </View>
     </View>
   );
+};
+
+CartScreen.navigationOptions = {
+  headerTitle: "Your Cart",
 };
 
 export default CartScreen;
