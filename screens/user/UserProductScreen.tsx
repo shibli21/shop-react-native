@@ -1,16 +1,76 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Button, Platform, StyleSheet, View } from "react-native";
+import { FlatList } from "react-native-gesture-handler";
+import {
+  NavigationParams,
+  NavigationScreenProp,
+  NavigationState,
+} from "react-navigation";
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
+import { StackNavigationOptions } from "react-navigation-stack/lib/typescript/src/vendor/types";
+import { useSelector } from "react-redux";
+import ProductItem from "../../components/shop/ProductItem";
+import CustomHeaderButton from "../../components/UI/HeaderButton";
+import colors from "../../constants/colors";
 
-interface Props {}
+interface Props {
+  navigation: NavigationScreenProp<any, any>;
+}
+type Navigation = NavigationScreenProp<NavigationState, NavigationParams>;
 
 const UserProductScreen = (props: Props) => {
-  return (
-    <View>
-      <Text></Text>
-    </View>
+  const userProduct = useSelector(
+    (state: RootState) => state.products.userProduct
   );
+
+  return (
+    <FlatList
+      data={userProduct}
+      renderItem={({ item }) => (
+        <ProductItem product={item}>
+          <View style={styles.button}>
+            <Button
+              color={colors.primary}
+              title="View Details"
+              onPress={() => {
+                props.navigation.navigate("ProductDetail", {
+                  productId: item.id,
+                  productTitle: item.title,
+                });
+              }}
+            />
+          </View>
+        </ProductItem>
+      )}
+    />
+  );
+};
+
+UserProductScreen.navigationOptions = ({
+  navigation,
+}: {
+  navigation: Navigation;
+}): StackNavigationOptions => {
+  return {
+    headerTitle: "User Products",
+    headerLeft: () => (
+      <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+        <Item
+          title="Menu"
+          iconName={Platform.OS === "android" ? "md-menu" : "ios-menu"}
+          onPress={() => {
+            navigation.toggleDrawer();
+          }}
+        />
+      </HeaderButtons>
+    ),
+  };
 };
 
 export default UserProductScreen;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  button: {
+    width: "100%",
+  },
+});

@@ -1,17 +1,17 @@
 import React from "react";
-import { Platform } from "react-native";
+import { Button, Platform, StyleSheet, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import {
   NavigationParams,
   NavigationScreenProp,
   NavigationState,
 } from "react-navigation";
-import { DrawerNavigatorItems } from "react-navigation-drawer";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import { StackNavigationOptions } from "react-navigation-stack/lib/typescript/src/vendor/types";
 import { useDispatch, useSelector } from "react-redux";
 import ProductItem from "../../components/shop/ProductItem";
 import CustomHeaderButton from "../../components/UI/HeaderButton";
+import colors from "../../constants/colors";
 import * as CartActions from "../../store/actions/cart";
 interface ProductOverviewScreenProps {
   navigation: NavigationScreenProp<any, any>;
@@ -25,23 +25,38 @@ const ProductOverviewScreen = (props: ProductOverviewScreenProps) => {
   );
   const dispatch = useDispatch();
 
+  const selectItemHandler = (id: string, title: string) => {
+    props.navigation.navigate("ProductDetail", {
+      productId: id,
+      productTitle: title,
+    });
+  };
+
   return (
     <>
       <FlatList
         data={products}
         renderItem={(itemData) => (
-          <ProductItem
-            product={itemData.item}
-            onAddToCart={() => {
-              dispatch(CartActions.addToCart(itemData.item));
-            }}
-            onViewDetails={() => {
-              props.navigation.navigate("ProductDetail", {
-                productId: itemData.item.id,
-                productTitle: itemData.item.title,
-              });
-            }}
-          />
+          <ProductItem product={itemData.item}>
+            <View style={styles.button}>
+              <Button
+                color={colors.primary}
+                title="View Details"
+                onPress={() => {
+                  selectItemHandler(itemData.item.id, itemData.item.title);
+                }}
+              />
+            </View>
+            <View style={styles.button}>
+              <Button
+                color={colors.accent}
+                title="Add to cart"
+                onPress={() => {
+                  dispatch(CartActions.addToCart(itemData.item));
+                }}
+              />
+            </View>
+          </ProductItem>
         )}
       />
     </>
@@ -81,3 +96,15 @@ ProductOverviewScreen.navigationOptions = ({
 };
 
 export default ProductOverviewScreen;
+
+const styles = StyleSheet.create({
+  actions: {
+    padding: 10,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  button: {
+    width: "49%",
+  },
+});

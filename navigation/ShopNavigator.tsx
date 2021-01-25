@@ -12,6 +12,7 @@ import CartScreen from "../screens/shop/CartScreen";
 import OrdersScreen from "../screens/shop/OrdersScreen";
 import ProductDetailsScreen from "../screens/shop/ProductDetailsScreen";
 import ProductOverviewScreen from "../screens/shop/ProductOverviewScreen";
+import UserProductScreen from "../screens/user/UserProductScreen";
 
 const defaultNavigationOptions: NavigationStackOptions = {
   headerStyle: {
@@ -57,11 +58,29 @@ const OrdersNavigator = createStackNavigator(
     defaultNavigationOptions,
   }
 );
+const AdminNavigator = createStackNavigator(
+  {
+    UserProduct: UserProductScreen,
+  },
+  {
+    navigationOptions: {
+      drawerIcon: (drawerConfig) => (
+        <Ionicons
+          size={23}
+          color={drawerConfig.tintColor}
+          name={Platform.OS === "android" ? "md-create" : "ios-create"}
+        />
+      ),
+    },
+    defaultNavigationOptions,
+  }
+);
 
 const ShopNavigator = createDrawerNavigator(
   {
     Products: ProductNavigator,
     Orders: OrdersNavigator,
+    Admin: AdminNavigator,
   },
   {
     contentOptions: {

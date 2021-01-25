@@ -1,14 +1,13 @@
-import React from "react";
-import { Button, Image, StyleSheet, Text, View } from "react-native";
-import colors from "../../constants/colors";
+import React, { ReactNode } from "react";
+import { Image, StyleSheet, Text, View } from "react-native";
 
 interface Props {
   product: Product;
-  onViewDetails: () => void;
-  onAddToCart: () => void;
+  children: ReactNode;
 }
 
-const ProductItem = ({ product, onViewDetails, onAddToCart }: Props) => {
+const ProductItem = (props: Props) => {
+  const { product } = props;
   return (
     // <TouchableNativeFeedback onPress={onViewDetails}>
     <View style={styles.product}>
@@ -18,22 +17,7 @@ const ProductItem = ({ product, onViewDetails, onAddToCart }: Props) => {
         <Text style={styles.title}>{product.title}</Text>
         <Text style={styles.price}>${product.price.toFixed(2)}</Text>
       </View>
-      <View style={styles.actions}>
-        <View style={styles.button}>
-          <Button
-            color={colors.primary}
-            title="View Details"
-            onPress={onViewDetails}
-          />
-        </View>
-        <View style={styles.button}>
-          <Button
-            color={colors.accent}
-            title="Add to cart"
-            onPress={onAddToCart}
-          />
-        </View>
-      </View>
+      <View style={styles.actions}>{props.children}</View>
     </View>
     // </TouchableNativeFeedback>
   );
@@ -81,8 +65,5 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-  },
-  button: {
-    width: "49%",
   },
 });
