@@ -34,9 +34,9 @@ const UserProductScreen = (props: Props) => {
           <View style={styles.button}>
             <Button
               color={colors.accent}
-              title="View Details"
+              title="Edit Product"
               onPress={() => {
-                props.navigation.navigate("ProductDetail", {
+                props.navigation.navigate("EditProduct", {
                   productId: item.id,
                   productTitle: item.title,
                 });
@@ -72,6 +72,17 @@ UserProductScreen.navigationOptions = ({
           iconName={Platform.OS === "android" ? "md-menu" : "ios-menu"}
           onPress={() => {
             navigation.toggleDrawer();
+          }}
+        />
+      </HeaderButtons>
+    ),
+    headerRight: () => (
+      <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+        <Item
+          title="Menu"
+          iconName={Platform.OS === "android" ? "md-create" : "ios-create"}
+          onPress={() => {
+            navigation.navigate("EditProduct");
           }}
         />
       </HeaderButtons>
