@@ -58,6 +58,20 @@ export default (state = initialState, action: CartActionType) => {
       };
     case "ADD_ORDER":
       return initialState;
+    case "DELETE_PRODUCT":
+      if (!state.items[action.productId]) {
+        return state;
+      }
+      const updatedItems = { ...state.items };
+      const itemTotal = state.items[action.productId].sum;
+      delete updatedItems[action.productId];
+
+      return {
+        ...state,
+        items: updatedItems,
+        totalAmount: state.totalAmount - itemTotal,
+      };
+
     default:
       return state;
   }

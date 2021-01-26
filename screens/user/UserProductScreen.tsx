@@ -8,10 +8,11 @@ import {
 } from "react-navigation";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import { StackNavigationOptions } from "react-navigation-stack/lib/typescript/src/vendor/types";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ProductItem from "../../components/shop/ProductItem";
 import CustomHeaderButton from "../../components/UI/HeaderButton";
 import colors from "../../constants/colors";
+import { deleteProduct } from "../../store/actions/products";
 
 interface Props {
   navigation: NavigationScreenProp<any, any>;
@@ -23,6 +24,8 @@ const UserProductScreen = (props: Props) => {
     (state: RootState) => state.products.userProduct
   );
 
+  const dispatch = useDispatch();
+
   return (
     <FlatList
       data={userProduct}
@@ -30,13 +33,22 @@ const UserProductScreen = (props: Props) => {
         <ProductItem product={item}>
           <View style={styles.button}>
             <Button
-              color={colors.primary}
+              color={colors.accent}
               title="View Details"
               onPress={() => {
                 props.navigation.navigate("ProductDetail", {
                   productId: item.id,
                   productTitle: item.title,
                 });
+              }}
+            />
+          </View>
+          <View style={styles.button}>
+            <Button
+              color={colors.primary}
+              title="Delete Product"
+              onPress={() => {
+                dispatch(deleteProduct(item.id));
               }}
             />
           </View>
@@ -71,6 +83,6 @@ export default UserProductScreen;
 
 const styles = StyleSheet.create({
   button: {
-    width: "100%",
+    width: "49%",
   },
 });
