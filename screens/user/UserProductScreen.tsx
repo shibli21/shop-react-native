@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Platform, StyleSheet, View } from "react-native";
+import { Alert, Button, Platform, StyleSheet, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import {
   NavigationParams,
@@ -26,6 +26,22 @@ const UserProductScreen = (props: Props) => {
 
   const dispatch = useDispatch();
 
+  const deleteHandler = (id: string) => {
+    Alert.alert("Are you sure?", "Do you really want to delete this item?", [
+      {
+        text: "No",
+        style: "default",
+      },
+      {
+        text: "Yes",
+        style: "destructive",
+        onPress: () => {
+          dispatch(deleteProduct(id));
+        },
+      },
+    ]);
+  };
+
   return (
     <FlatList
       data={userProduct}
@@ -47,9 +63,7 @@ const UserProductScreen = (props: Props) => {
             <Button
               color={colors.primary}
               title="Delete Product"
-              onPress={() => {
-                dispatch(deleteProduct(item.id));
-              }}
+              onPress={() => deleteHandler(item.id)}
             />
           </View>
         </ProductItem>
