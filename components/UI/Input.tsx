@@ -104,8 +104,8 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   label: {
-    fontFamily: "open-sans-bold",
     marginVertical: 8,
+    fontWeight: "bold",
   },
   input: {
     paddingHorizontal: 2,
@@ -117,7 +117,6 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   errorText: {
-    fontFamily: "open-sans",
     color: "red",
     fontSize: 13,
   },

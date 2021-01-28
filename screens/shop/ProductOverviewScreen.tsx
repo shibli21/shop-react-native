@@ -1,5 +1,12 @@
-import React from "react";
-import { Button, Platform, StyleSheet, View } from "react-native";
+import React, { useCallback, useEffect, useState } from "react";
+import {
+  ActivityIndicator,
+  Button,
+  Platform,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import {
   NavigationParams,
@@ -13,6 +20,7 @@ import ProductItem from "../../components/shop/ProductItem";
 import CustomHeaderButton from "../../components/UI/HeaderButton";
 import colors from "../../constants/colors";
 import * as CartActions from "../../store/actions/cart";
+import * as ProductActions from "../../store/actions/products";
 interface ProductOverviewScreenProps {
   navigation: NavigationScreenProp<any, any>;
 }
@@ -20,6 +28,9 @@ interface ProductOverviewScreenProps {
 type Navigation = NavigationScreenProp<NavigationState, NavigationParams>;
 
 const ProductOverviewScreen = (props: ProductOverviewScreenProps) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<any>();
+
   const products = useSelector(
     (state: RootState) => state.products.availableProducts
   );
@@ -31,6 +42,52 @@ const ProductOverviewScreen = (props: ProductOverviewScreenProps) => {
       productTitle: title,
     });
   };
+
+  const loadProducts = useCallback(async () => {
+    setError(null);
+    setIsLoading(true);
+    try {
+      await dispatch(ProductActions.fetchProducts());
+    } catch (err) {
+      setError(err.message);
+    }
+    setIsLoading(false);
+  }, [dispatch, setIsLoading, setError]);
+
+  useEffect(() => {
+    loadProducts();
+  }, [dispatch, loadProducts]);
+
+  if (isLoading) {
+    return (
+      <View style={styles.centered}>
+        <ActivityIndicator size="large" color={colors.primary} />
+      </View>
+    );
+  }
+
+  if (!isLoading && products.length === 0) {
+    console.log(isLoading);
+
+    return (
+      <View style={styles.centered}>
+        <Text>NO PRODUCTS FOUND</Text>
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View style={styles.centered}>
+        <Text>An error occurred!</Text>
+        <Button
+          title="Try again"
+          onPress={loadProducts}
+          color={colors.primary}
+        />
+      </View>
+    );
+  }
 
   return (
     <>
@@ -107,4 +164,5 @@ const styles = StyleSheet.create({
   button: {
     width: "49%",
   },
+  centered: { flex: 1, justifyContent: "center", alignItems: "center" },
 });

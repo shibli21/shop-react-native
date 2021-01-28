@@ -11,9 +11,14 @@ const initialState: ProductsState = {
 
 export default (state = initialState, action: ProductActionType) => {
   switch (action.type) {
+    case "SET_PRODUCT":
+      return {
+        availableProducts: action.products,
+        userProduct: PRODUCTS.filter((prod) => prod.ownerId === "u1"),
+      };
     case "CREATE_PRODUCT":
       const newProduct = new Product(
-        new Date().toISOString(),
+        action.productData.id,
         "u1",
         action.productData.title,
         action.productData.description,
