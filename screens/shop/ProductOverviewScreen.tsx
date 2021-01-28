@@ -58,6 +58,16 @@ const ProductOverviewScreen = (props: ProductOverviewScreenProps) => {
     loadProducts();
   }, [dispatch, loadProducts]);
 
+  useEffect(() => {
+    const willFocusSub = props.navigation.addListener(
+      "willFocus",
+      loadProducts
+    );
+    return () => {
+      willFocusSub.remove();
+    };
+  }, [loadProducts]);
+
   if (isLoading) {
     return (
       <View style={styles.centered}>
