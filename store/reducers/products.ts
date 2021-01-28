@@ -14,7 +14,7 @@ export default (state = initialState, action: ProductActionType) => {
     case "SET_PRODUCT":
       return {
         availableProducts: action.products,
-        userProduct: PRODUCTS.filter((prod) => prod.ownerId === "u1"),
+        userProduct: action.products.filter((prod) => prod.ownerId === "u1"),
       };
     case "CREATE_PRODUCT":
       const newProduct = new Product(

@@ -96,7 +96,6 @@ export const createProduct = (
     );
 
     const resData = await response.json();
-    console.log("🚀 ~ file: products.ts ~ line 57 ~ return ~ resData", resData);
     dispatch({
       type: CREATE_PRODUCT,
       productData: { id: resData.name, title, description, imgUrl, price },
@@ -109,13 +108,39 @@ export const updateProduct = (
   description: string,
   imgUrl: string
 ) => {
-  return {
-    type: UPDATE_PRODUCT,
-    productId: id,
-    productData: { title, description, imgUrl },
+  return async (dispatch: Dispatch) => {
+    await fetch(
+      `https://my-shop-3eaa4-default-rtdb.firebaseio.com/products/${id}.json`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title,
+          description,
+          imgUrl,
+        }),
+      }
+    );
+
+    dispatch({
+      type: UPDATE_PRODUCT,
+      productId: id,
+      productData: { title, description, imgUrl },
+    });
   };
 };
 
-export const deleteProduct = (productId: string): ProductActionType => {
-  return { type: DELETE_PRODUCT, productId };
+export const deleteProduct = (productId: string) => {
+  return async (dispatch: Dispatch) => {
+    await fetch(
+      `https://my-shop-3eaa4-default-rtdb.firebaseio.com/products/${productId}.json`,
+      {
+        method: "DELETE",
+      }
+    );
+
+    dispatch({ type: DELETE_PRODUCT, productId });
+  };
 };
