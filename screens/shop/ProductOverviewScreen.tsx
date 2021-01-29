@@ -29,6 +29,7 @@ type Navigation = NavigationScreenProp<NavigationState, NavigationParams>;
 
 const ProductOverviewScreen = (props: ProductOverviewScreenProps) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState<any>();
 
   const products = useSelector(
@@ -45,17 +46,21 @@ const ProductOverviewScreen = (props: ProductOverviewScreenProps) => {
 
   const loadProducts = useCallback(async () => {
     setError(null);
-    setIsLoading(true);
+    setIsRefreshing(true);
+
     try {
       await dispatch(ProductActions.fetchProducts());
     } catch (err) {
       setError(err.message);
     }
-    setIsLoading(false);
+    setIsRefreshing(false);
   }, [dispatch, setIsLoading, setError]);
 
   useEffect(() => {
-    loadProducts();
+    setIsLoading(true);
+    loadProducts().then(() => {
+      setIsLoading(false);
+    });
   }, [dispatch, loadProducts]);
 
   useEffect(() => {
@@ -102,6 +107,8 @@ const ProductOverviewScreen = (props: ProductOverviewScreenProps) => {
   return (
     <>
       <FlatList
+        onRefresh={loadProducts}
+        refreshing={isRefreshing}
         data={products}
         renderItem={(itemData) => (
           <ProductItem product={itemData.item}>
