@@ -6,12 +6,16 @@ const initialState: OrdersState = {
 
 export default (state = initialState, actions: OrdersActionType) => {
   switch (actions.type) {
+    case "SET_ORDERS":
+      return {
+        orders: actions.orders,
+      };
     case "ADD_ORDER":
       const newOrder = new Order(
-        new Date().toString(),
+        actions.orderData.id,
         actions.orderData.items,
         actions.orderData.totalAmount,
-        new Date()
+        actions.orderData.date
       );
       return { ...state, orders: state.orders.concat(newOrder) };
 

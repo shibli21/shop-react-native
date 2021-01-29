@@ -39,4 +39,6 @@ interface Item {
 interface CartState {
   items: Item;
   totalAmount: number;
+  id: string;
+  date: Date;
 }

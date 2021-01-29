@@ -23,7 +23,7 @@ const OrderItem = (props: OrderItemProps) => {
   return (
     <View style={styles.orderItem}>
       <View style={styles.summary}>
-        <Text style={styles.totalAmount}>${props.amount.toFixed(2)}</Text>
+        <Text style={styles.totalAmount}>${props.amount}</Text>
         <Text style={styles.date}>{props.date.toUTCString()}</Text>
       </View>
       <View style={styles.button}>

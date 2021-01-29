@@ -1,5 +1,5 @@
-import React from "react";
-import { Platform, StyleSheet } from "react-native";
+import React, { useEffect, useState } from "react";
+import { ActivityIndicator, Platform, StyleSheet, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import {
   NavigationParams,
@@ -9,16 +9,36 @@ import {
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
 import { StackNavigationOptions } from "react-navigation-stack/lib/typescript/src/vendor/types";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import OrderItem from "../../components/shop/OrderItem";
 import CustomHeaderButton from "../../components/UI/HeaderButton";
+import colors from "../../constants/colors";
+import { fetchOrders } from "../../store/actions/orders";
 
 interface Props {}
 
 type Navigation = NavigationScreenProp<NavigationState, NavigationParams>;
 
 const OrdersScreen: NavigationStackScreenComponent = (props: Props) => {
+  const [isLoading, setIsLoading] = useState(false);
   const orders = useSelector((state: RootState) => state.orders.orders);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    setIsLoading(true);
+    dispatch(fetchOrders()).then(() => {
+      setIsLoading(false);
+    });
+  }, [dispatch]);
+
+  if (isLoading) {
+    return (
+      <View style={styles.centered}>
+        <ActivityIndicator size="large" color={colors.primary} />
+      </View>
+    );
+  }
 
   const transformedCartItems = (items: any) => {
     const transformedCartItems = [];
@@ -84,4 +104,10 @@ OrdersScreen.navigationOptions = ({
 };
 export default OrdersScreen;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  centered: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
